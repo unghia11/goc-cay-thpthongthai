@@ -301,6 +301,14 @@ h1{
 #like-btn i{transition:transform .25s ease}
 #like-btn:hover i{transform:scale(1.18)}
 
+
+.guest-status{min-height:18px;margin-top:8px;font-size:10px;color:#7f968b}
+.message{animation:messageIn .28s ease both}
+.message.pending{opacity:.65}
+@keyframes messageIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+#like-btn.is-liked{border-color:rgba(255,111,145,.38);background:rgba(255,111,145,.09)}
+#like-btn.is-liked i{color:#ff6f91;animation:heartPop .38s ease}
+@keyframes heartPop{0%,100%{transform:scale(1)}45%{transform:scale(1.45)}}
 </style>
 </head>
 
@@ -470,7 +478,13 @@ h1{
       <input class="input" id="guest-msg" required maxlength="300" placeholder="Viết một dòng kỷ niệm…">
       <button class="btn primary" type="submit"><i class="fa-solid fa-paper-plane"></i> Gửi</button>
     </form>
-    <div class="messages" id="guestbook-list">
+    <div class="guest-status" id="guest-status"></div>
+    <div class="messages" id="guestbook-list"></div>
+    <div style="display:flex;justify-content:center;margin-top:12px">
+      <button class="btn" id="load-more-btn" type="button" onclick="loadMoreMessages()" style="display:none">
+        <i class="fa-solid fa-rotate"></i> Xem thêm
+      </button>
+    </div>
   </section>
 
   <section class="section card qr" id="chia-se">
@@ -536,6 +550,195 @@ h1{
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://pasaibhjvmqxkxkxgazeuy.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_i0hHndaivS6LMJ-dqdaQKw_ij-iCELl';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+let qrcodeObj=null, heartCount=0, messageOffset=0, hasMoreMessages=true, guestbookChannel=null;
+const HEART_LIMIT=5, PAGE_SIZE=30, BROWSER_ID_KEY='goc-cay-truong-toi-browser-id-v2';
+const $=id=>document.getElementById(id);
+
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-innerHeight;
+  $('progress').style.width=(h>0?(scrollY/h)*100:0)+'%';
+  $('topBtn').classList.toggle('show',scrollY>600);
+},{passive:true});
+
+function toast(message,error=false){
+  $('toast-msg').textContent=message;
+  $('toast-icon').className=error?'fa-solid fa-circle-xmark':'fa-solid fa-circle-check';
+  $('toast-icon').style.color=error?'#ff6f91':'#58e49a';
+  $('toast').classList.add('show');
+  clearTimeout(window._toast);window._toast=setTimeout(()=>$('toast').classList.remove('show'),2600);
+}
+function openLetter(){ $('letterModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(id){$(id).classList.remove('open');if(!document.querySelector('.modal.open'))document.body.style.overflow='';}
+function backdropClose(e,id){if(e.target===$(id))closeModal(id)}
+function openImage(src,caption){$('modal-img').src=src;$('modal-caption').textContent=caption;$('imageModal').classList.add('open');document.body.style.overflow='hidden'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));document.body.style.overflow=''}});
+
+function getBrowserId(){
+  let id=localStorage.getItem(BROWSER_ID_KEY);
+  if(!id){
+    id=crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+    localStorage.setItem(BROWSER_ID_KEY,id);
+  }
+  return id;
+}
+function getLocalHeartUsed(){return Number(localStorage.getItem('goc-cay-truong-toi-heart-used-v2')||0)}
+function setLocalHeartUsed(v){localStorage.setItem('goc-cay-truong-toi-heart-used-v2',String(v))}
+function updateHeartUI(){
+  $('heart-count').textContent=heartCount;
+  $('stat-heart').textContent=heartCount;
+  const used=getLocalHeartUsed();
+  $('like-btn').classList.toggle('is-liked',used>0);
+  $('like-btn').title=`Đã dùng ${used}/5 lượt tim`;
+}
+
+async function addHeart(){
+  const b=$('like-btn'), used=getLocalHeartUsed();
+  if(used>=HEART_LIMIT){toast('Trình duyệt này đã dùng đủ 5 lượt tim ❤️',true);return}
+  b.disabled=true;
+
+  // Phản hồi giao diện ngay, sau đó đồng bộ database.
+  const oldCount=heartCount;
+  heartCount=oldCount+1;
+  setLocalHeartUsed(used+1);
+  updateHeartUI();
+  toast(`Đã thả tim ❤️ (${used+1}/5)`);
+
+  try{
+    const {data,error}=await supabaseClient.rpc('add_heart',{p_browser_id:getBrowserId()});
+    if(error)throw error;
+    if(!data?.ok){
+      heartCount=Number(data?.heart_count??oldCount);
+      setLocalHeartUsed(Math.min(5,Number(data?.used??used)));
+      updateHeartUI();
+      toast(data?.message||'Bạn đã đủ lượt tim.',true);
+      return;
+    }
+    heartCount=Number(data.heart_count??heartCount);
+    updateHeartUI();
+  }catch(e){
+    console.error(e);
+    heartCount=oldCount;
+    setLocalHeartUsed(used);
+    updateHeartUI();
+    toast('Không thể lưu lượt tim. Kiểm tra Supabase.',true);
+  }finally{b.disabled=false}
+}
+
+function initQR(url){
+  if(!qrcodeObj)qrcodeObj=new QRCode($('qrcode'),{text:url,width:180,height:180,colorDark:'#14532d',colorLight:'#fff',correctLevel:QRCode.CorrectLevel.H});
+  else{qrcodeObj.clear();qrcodeObj.makeCode(url)}
+}
+function resetURL(){const u=location.href;$('qr-url-input').value=u;initQR(u);toast('Đã dùng link hiện tại.')}
+function downloadQRCode(){
+  const img=$('qrcode').querySelector('img'),canvas=$('qrcode').querySelector('canvas');
+  const src=img?.src||canvas?.toDataURL('image/png');if(!src)return toast('QR chưa sẵn sàng.',true);
+  const a=document.createElement('a');a.href=src;a.download='goc-cay-truong-toi-qr.png';a.click();
+}
+async function copyQRLink(){
+  const value=$('qr-url-input').value.trim()||location.href;
+  try{await navigator.clipboard.writeText(value);toast('Đã copy link.')}
+  catch{const t=document.createElement('textarea');t.value=value;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('Đã copy link.')}
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function formatDate(v){return v?new Intl.DateTimeFormat('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(v)):'Vừa xong'}
+function renderMessage(m,prepend=false,pending=false){
+  if(m.id&&document.querySelector(`[data-message-id="${CSS.escape(String(m.id))}"]`))return;
+  const el=document.createElement('div');el.className='message'+(pending?' pending':'');
+  if(m.id)el.dataset.messageId=m.id;
+  el.innerHTML=`<div class="message-top"><span><i class="fa-solid fa-leaf"></i> ${escapeHtml(m.name)}</span><span>${formatDate(m.createdAt)}</span></div><p>“${escapeHtml(m.message)}”</p>`;
+  prepend?$('guestbook-list').prepend(el):$('guestbook-list').append(el);
+}
+function updateMessageCount(){$('stat-msg').textContent=String($('guestbook-list').children.length).padStart(2,'0')}
+function status(text,error=false){$('guest-status').textContent=text||'';$('guest-status').style.color=error?'#ff9bb0':'#7f968b'}
+
+async function loadMessages(reset=true){
+  if(reset){messageOffset=0;hasMoreMessages=true;$('guestbook-list').innerHTML=''}
+  if(!hasMoreMessages)return;
+  status(reset?'Đang tải lưu bút…':'Đang tải thêm…');
+  const {data,error}=await supabaseClient.from('guestbook_messages')
+    .select('id,name,message,created_at')
+    .order('created_at',{ascending:false})
+    .range(messageOffset,messageOffset+PAGE_SIZE-1);
+  if(error){console.error(error);status('Không tải được lưu bút. Kiểm tra Supabase.',true);return}
+  (data||[]).forEach(m=>renderMessage({id:m.id,name:m.name,message:m.message,createdAt:m.created_at}));
+  messageOffset+=(data||[]).length;
+  hasMoreMessages=(data||[]).length===PAGE_SIZE;
+  $('load-more-btn').style.display=hasMoreMessages?'inline-flex':'none';
+  updateMessageCount();
+  if(!hasMoreMessages)status('Đã hiển thị hết lưu bút.');
+}
+async function loadMoreMessages(){await loadMessages(false)}
+
+async function loadStats(){
+  const {data,error}=await supabaseClient.from('site_stats').select('heart_count').eq('id',1).single();
+  if(error){console.error(error);return}
+  heartCount=Number(data?.heart_count??0);updateHeartUI();
+}
+
+async function handleGuestbookSubmit(e){
+  e.preventDefault();
+  const name=$('guest-name').value.trim(),message=$('guest-msg').value.trim(),btn=e.submitter;
+  if(!name||!message)return;
+  btn.disabled=true;
+
+  const tempId='pending-'+Date.now();
+  renderMessage({id:tempId,name,message,createdAt:new Date().toISOString()},true,true);
+  updateMessageCount();
+  $('guest-name').value='';$('guest-msg').value='';
+  status('Đang gửi…');
+
+  try{
+    const {data,error}=await supabaseClient.from('guestbook_messages')
+      .insert({name,message}).select('id,name,message,created_at').single();
+    if(error)throw error;
+    document.querySelector(`[data-message-id="${CSS.escape(tempId)}"]`)?.remove();
+    renderMessage({id:data.id,name:data.name,message:data.message,createdAt:data.created_at},true);
+    updateMessageCount();
+    status('Đã lưu · đang đồng bộ realtime ✨');
+    toast('Đã lưu lời nhắn 🎉');
+  }catch(err){
+    console.error(err);
+    document.querySelector(`[data-message-id="${CSS.escape(tempId)}"]`)?.remove();
+    $('guest-name').value=name;$('guest-msg').value=message;
+    updateMessageCount();status('Gửi thất bại. Nội dung vẫn được giữ lại.',true);
+    toast('Chưa thể lưu lời nhắn.',true);
+  }finally{btn.disabled=false}
+}
+
+function subscribeGuestbook(){
+  if(guestbookChannel)supabaseClient.removeChannel(guestbookChannel);
+  guestbookChannel=supabaseClient.channel('guestbook-live')
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'guestbook_messages'},payload=>{
+      const m=payload.new;
+      renderMessage({id:m.id,name:m.name,message:m.message,createdAt:m.created_at},true);
+      updateMessageCount();status('Có lưu bút mới ✨');
+    }).subscribe(s=>{if(s==='SUBSCRIBED')status('Đang đồng bộ lưu bút realtime ✨')});
+}
+
+$('themeBtn').addEventListener('click',()=>{
+  const light=document.body.dataset.theme==='light';document.body.dataset.theme=light?'':'light';
+  if(!light){
+    document.body.style.setProperty('--text','#10231b');document.body.style.setProperty('--muted','#587066');document.body.style.setProperty('--line','rgba(18,66,45,.15)');
+    document.body.style.background='linear-gradient(145deg,#f3f8f3,#e8f2eb)';
+    document.querySelector('.nav').style.background='rgba(243,248,243,.78)';
+    document.querySelector('.nav').style.color='#10231b';
+    document.querySelectorAll('.card,.stat,.letter').forEach(x=>x.style.color='#10231b');
+    toast('Đã chuyển sang giao diện sáng ☀️');
+  }else location.reload();
+});
+
+window.addEventListener('load',async()=>{
+  $('qr-url-input').value=location.href;initQR(location.href);updateHeartUI();
+  await Promise.allSettled([loadStats(),loadMessages(true)]);
+  subscribeGuestbook();
+});
+</script>
 <script>
 /* ===== SUPABASE CONFIG =====
    Thay 2 giá trị dưới đây bằng Project URL + Publishable key của Supabase.
