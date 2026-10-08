@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071c17">
+<meta name="description" content="Góc Cây Trường Tôi — nơi lưu giữ những khoảnh khắc, lời nhắn và ký ức học trò THPT Hồng Thái.">
+<title>Góc Cây Trường Tôi — K31 · 10A1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+:root{
+  --bg:#06130f; --bg2:#0a2119; --panel:rgba(12,34,27,.72);
+  --panel2:rgba(16,43,34,.82); --line:rgba(196,238,211,.13);
+  --text:#f4f8f5; --muted:#a9beb4; --green:#58e49a; --green2:#18b86b;
+  --gold:#e8c777; --rose:#ff6f91; --shadow:0 24px 80px rgba(0,0,0,.32);
+  --radius:28px; --max:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--text);font-family:"Be Vietnam Pro",sans-serif;
+  background:
+    radial-gradient(circle at 8% 0%,rgba(50,210,126,.16),transparent 28%),
+    radial-gradient(circle at 92% 18%,rgba(232,199,119,.10),transparent 25%),
+    linear-gradient(145deg,#04100d 0%,#071c16 48%,#0b1715 100%);
+  min-height:100vh;overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;z-index:-1;
+  background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1px);
+  background-size:34px 34px;mask-image:linear-gradient(to bottom,black,transparent 75%);
+}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit}
+button{cursor:pointer}
+::selection{background:#2dd47e;color:#03110c}
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--green),var(--gold));z-index:1000;box-shadow:0 0 18px #58e49a}
+.nav{
+  position:sticky;top:0;z-index:100;padding:14px 18px;
+  background:rgba(4,16,13,.64);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)
+}
+.nav-inner{max-width:var(--max);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em}
+.brand-mark{
+  width:38px;height:38px;border-radius:13px;display:grid;place-items:center;
+  color:#062016;background:linear-gradient(135deg,#7ff0af,#d9ef9d);
+  box-shadow:0 8px 24px rgba(88,228,154,.2)
+}
+.nav-links{display:flex;gap:5px;align-items:center}
+.nav-links a,.theme-btn{
+  color:#b7cbc1;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:700;
+  border:1px solid transparent;background:transparent
+}
+.nav-links a:hover,.theme-btn:hover{color:#fff;background:rgba(255,255,255,.06);border-color:var(--line)}
+.theme-btn{width:38px;height:38px;padding:0}
+.hero{max-width:var(--max);margin:0 auto;padding:78px 20px 46px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:38px;align-items:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(88,228,154,.22);background:rgba(88,228,154,.07);
+  color:#8af0b5;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase
+}
+h1{
+  margin:18px 0 15px;font-family:"DM Serif Display",serif;font-weight:400;
+  font-size:clamp(48px,8vw,92px);line-height:.94;letter-spacing:-.045em
+}
+.hero h1 em{font-style:italic;color:#9cf3b8}
+.lead{max-width:670px;color:#b8cbc2;font-size:15px;line-height:1.9}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
+.btn{
+  border:1px solid var(--line);padding:12px 16px;border-radius:15px;color:#fff;
+  background:rgba(255,255,255,.055);font-size:12px;font-weight:800;transition:.2s
+}
+.btn:hover{transform:translateY(-2px);border-color:rgba(88,228,154,.4);background:rgba(255,255,255,.09)}
+.btn.primary{border:0;background:linear-gradient(135deg,#32d981,#15985b);box-shadow:0 14px 30px rgba(24,184,107,.2)}
+.hero-card{
+  position:relative;min-height:350px;border:1px solid var(--line);border-radius:34px;
+  overflow:hidden;background:
+    linear-gradient(180deg,rgba(6,27,20,.12),rgba(4,18,14,.96)),
+    url("assets/gallery/ky-niem-ben-goc-cay.png") center/cover;
+  box-shadow:var(--shadow)
+}
+.hero-card:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.08),transparent 65%);transform:translateX(-120%);animation:shine 7s infinite}
+.hero-card-content{position:absolute;left:20px;right:20px;bottom:20px;z-index:2}
+.hero-card-content small{color:#a9c7b8}.hero-card-content strong{display:block;font-family:"DM Serif Display";font-size:29px;margin-top:5px}
+.float-badge{
+  position:absolute;right:15px;top:15px;padding:9px 11px;border-radius:14px;
+  background:rgba(4,18,14,.72);backdrop-filter:blur(12px);border:1px solid var(--line);font-size:10px;font-weight:800
+}
+.container{max-width:var(--max);margin:auto;padding:0 20px 72px}
+.section{margin-top:28px}
+.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:16px}
+.kicker{color:#7fe9aa;text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:800}
+.section h2{font-size:clamp(24px,4vw,34px);margin:6px 0 0;letter-spacing:-.035em}
+.sub{color:#82988e;font-size:12px;line-height:1.7;margin:5px 0 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat,.card{
+  border:1px solid var(--line);background:linear-gradient(145deg,rgba(18,49,39,.75),rgba(8,25,20,.72));
+  box-shadow:0 16px 55px rgba(0,0,0,.16);border-radius:22px
+}
+.stat{padding:19px}.stat i{color:var(--green);font-size:14px}.stat b{display:block;font-size:25px;margin-top:10px}.stat span{font-size:10px;color:var(--muted)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.feature{padding:22px;transition:.25s}.feature:hover{transform:translateY(-5px);border-color:rgba(88,228,154,.3)}
+.icon{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;margin-bottom:17px;background:rgba(88,228,154,.1);color:var(--green)}
+.feature:nth-child(2) .icon{background:rgba(232,199,119,.1);color:var(--gold)}
+.feature:nth-child(3) .icon{background:rgba(255,111,145,.1);color:var(--rose)}
+.feature h3{margin:0 0 8px;font-size:15px}.feature p{margin:0;color:var(--muted);font-size:11px;line-height:1.8}
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:105px;gap:10px}
+.photo{position:relative;overflow:hidden;border-radius:20px;border:1px solid var(--line);cursor:pointer;background:#10261f}
+.photo:nth-child(1){grid-column:span 7;grid-row:span 3}.photo:nth-child(2){grid-column:span 5;grid-row:span 2}
+.photo:nth-child(3){grid-column:span 5;grid-row:span 3}.photo:nth-child(4){grid-column:span 7;grid-row:span 2}
+.photo img{width:100%;height:100%;object-fit:cover;transition:.5s}.photo:hover img{transform:scale(1.07)}
+.photo:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.78))}
+.caption{position:absolute;z-index:2;left:14px;right:14px;bottom:13px;font-size:11px;font-weight:700}
+.caption i{color:#9df0b9;margin-right:5px}
+.letter{
+  display:grid;grid-template-columns:1fr .82fr;gap:20px;padding:28px;border-radius:30px;
+  border:1px solid rgba(232,199,119,.2);
+  background:linear-gradient(135deg,rgba(34,67,52,.75),rgba(24,39,31,.82));overflow:hidden;position:relative
+}
+.letter:before{content:"“";position:absolute;right:20px;top:-30px;font-family:Georgia;font-size:180px;color:rgba(232,199,119,.07)}
+.letter h2{font-family:"DM Serif Display";font-weight:400;font-size:42px;line-height:1.05;margin:10px 0}
+.letter p{color:#b9c9c1;font-size:12px;line-height:1.9;max-width:520px}
+.envelope-wrap{display:grid;place-items:center}
+.envelope{
+  width:min(290px,90%);aspect-ratio:1.55;border-radius:8px;background:#e7d5ad;position:relative;
+  box-shadow:0 25px 50px rgba(0,0,0,.3);transition:.35s;cursor:pointer
+}
+.envelope:before{content:"";position:absolute;inset:0;clip-path:polygon(0 0,50% 57%,100% 0);background:#f5e7c5;z-index:2}
+.envelope:after{content:"";position:absolute;inset:0;clip-path:polygon(0 0,50% 62%,100% 0,100% 100%,0 100%);background:#dcc79b;z-index:1}
+.envelope:hover{transform:translateY(-8px) rotate(-1.5deg)}
+.seal{position:absolute;z-index:4;left:50%;top:44%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#214b38;color:#e8d9b4;border:3px double #a6b38f}
+.envelope-label{position:absolute;z-index:3;bottom:12px;left:0;width:100%;text-align:center;color:#6d5c3d;font-size:9px;font-weight:800;letter-spacing:.08em}
+.guest{padding:25px}.form{display:grid;grid-template-columns:.6fr 1.4fr auto;gap:9px;margin-top:16px}
+.input{width:100%;border:1px solid var(--line);background:rgba(2,14,10,.5);color:#fff;border-radius:14px;padding:13px 14px;outline:none;font-size:12px}
+.input:focus{border-color:rgba(88,228,154,.55);box-shadow:0 0 0 3px rgba(88,228,154,.07)}
+.messages{margin-top:14px;display:grid;gap:8px;max-height:285px;overflow:auto;padding-right:3px}
+.message{padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
+.message-top{display:flex;justify-content:space-between;gap:10px;color:#8eecb3;font-size:10px;font-weight:800}.message-top span:last-child{color:#6e8379;font-weight:600}
+.message p{margin:7px 0 0;color:#b8c9c0;font-size:11px;line-height:1.7}
+.qr{display:grid;grid-template-columns:210px 1fr;gap:25px;align-items:center;padding:25px}
+.qr-box{background:#fff;border-radius:19px;padding:13px;display:grid;place-items:center;min-height:190px}
+.qr-box #qrcode img,.qr-box #qrcode canvas{max-width:100%;height:auto}
+.qr-copy h3{font-size:22px;margin:0 0 8px}.qr-copy p{font-size:11px;color:var(--muted);line-height:1.8}
+.qr-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.footer{border-top:1px solid var(--line);padding:30px 20px 42px;text-align:center;color:#667d72;font-size:10px}
+.info-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:13px}
+.info-card{padding:24px}.info-card h3{font-size:18px;margin:0 0 9px}.info-card p{font-size:11px;color:var(--muted);line-height:1.85;margin:0}
+.info-list{display:grid;gap:9px;margin-top:15px}.info-row{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);font-size:11px}.info-row b{color:#9af0b8}
+.teacher-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.teacher-card{padding:21px;text-align:center}.teacher-avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;background:linear-gradient(135deg,#234d3a,#132c22);border:1px solid rgba(88,228,154,.22);color:var(--green);font-size:20px}.teacher-card h3{font-size:14px;margin:0 0 6px}.teacher-card p{font-size:10px;color:var(--muted);line-height:1.7;margin:0}
+.wish-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.wish{padding:19px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(25,57,44,.72),rgba(8,25,20,.72));min-height:125px}.wish i{color:var(--gold);font-size:14px}.wish strong{display:block;font-size:12px;margin:12px 0 6px}.wish span{font-size:10px;color:var(--muted);line-height:1.65}
+.counter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.counter{padding:19px;text-align:center;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.025)}.counter b{display:block;font-family:"DM Serif Display";font-size:32px;color:#a4f2bd}.counter span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.quote-wall{padding:28px;text-align:center;border-radius:28px;border:1px solid rgba(232,199,119,.18);background:radial-gradient(circle at 50% 0%,rgba(232,199,119,.09),transparent 50%),rgba(17,37,29,.7)}.quote-wall .bigquote{font-family:"DM Serif Display";font-size:clamp(25px,4vw,39px);line-height:1.2;margin:8px auto 12px;max-width:760px}.quote-wall p{font-size:10px;color:var(--muted);margin:0}
+@media(max-width:850px){.info-grid{grid-template-columns:1fr}.teacher-grid{grid-template-columns:1fr 1fr}.wish-grid{grid-template-columns:1fr 1fr}.counter-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.teacher-grid,.wish-grid,.counter-grid{grid-template-columns:1fr}.info-row{display:block}.info-row b{display:block;margin-top:4px}}
+
+.modal{position:fixed;inset:0;z-index:300;background:rgba(1,8,6,.82);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:18px}
+.modal.open{display:flex}
+.modal-panel{width:min(720px,100%);max-height:calc(100dvh - 36px);overflow:auto;background:#eef0df;color:#274034;border-radius:26px;box-shadow:0 30px 100px #0008;position:relative}
+.modal-dark .modal-panel{background:#0b2019;color:#edf6f0;border:1px solid var(--line)}
+.close{position:absolute;right:13px;top:13px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(0,0,0,.1);color:inherit}
+.letter-paper{padding:42px 42px 36px}.letter-paper .kicker{color:#607e68}.letter-paper h2{font-family:"DM Serif Display";font-size:42px;line-height:1.05;font-weight:400;margin:9px 0 20px}.letter-paper p{font-size:13px;line-height:1.95}.quote{border-left:3px solid #8ca36e;background:rgba(113,140,96,.12);padding:15px 18px;margin:22px 0;font-family:"DM Serif Display";font-size:19px!important}
+.image-panel{background:#06130f;border:1px solid var(--line);padding:10px;width:min(900px,100%);border-radius:24px}.image-panel img{display:block;width:100%;max-height:78vh;object-fit:contain;border-radius:17px}.image-caption{text-align:center;color:#a9beb4;padding:12px 6px 4px;font-size:11px}
+.toast{position:fixed;z-index:500;right:18px;bottom:18px;transform:translateY(120px);opacity:0;transition:.3s;background:#102b22;border:1px solid rgba(88,228,154,.25);color:#effaf4;padding:13px 16px;border-radius:15px;box-shadow:var(--shadow);font-size:11px;display:flex;gap:9px;align-items:center;max-width:min(380px,calc(100% - 36px))}
+.toast.show{transform:none;opacity:1}
+.top{position:fixed;right:18px;bottom:18px;z-index:80;width:43px;height:43px;border:1px solid var(--line);border-radius:14px;background:rgba(9,28,22,.8);color:#fff;display:none}
+.top.show{display:block}
+@keyframes shine{0%,65%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+@media(max-width:850px){
+  .hero-grid,.letter{grid-template-columns:1fr}.hero-card{min-height:290px}
+  .features{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}
+  .gallery{grid-auto-rows:90px}.photo:nth-child(1),.photo:nth-child(2),.photo:nth-child(3),.photo:nth-child(4){grid-column:span 6;grid-row:span 2}
+  .qr{grid-template-columns:1fr;text-align:center}.qr-box{width:210px;margin:auto}
+}
+@media(max-width:640px){
+  .nav-links a{display:none}.hero{padding-top:52px}.hero-card{min-height:250px}
+  .stats{gap:7px}.stat{padding:13px}.stat b{font-size:20px}.stat span{font-size:9px}
+  .gallery{grid-template-columns:1fr 1fr;grid-auto-rows:120px}.photo:nth-child(n){grid-column:span 1;grid-row:span 1}
+  .photo:nth-child(1){grid-column:span 2}.photo:nth-child(4){grid-column:span 2}
+  .form{grid-template-columns:1fr}.letter{padding:22px}.letter h2{font-size:35px}.letter-paper{padding:38px 23px 28px}
+  .section-head{display:block}.brand span{display:none}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* ===== EXTRA PREMIUM DETAILS ===== */
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.timeline-item{
+  position:relative;
+  padding:19px 17px;
+  min-height:145px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(18,49,39,.7),rgba(8,25,20,.7));
+  transition:.3s ease;
+}
+.timeline-item:hover{transform:translateY(-4px);border-color:rgba(88,228,154,.28)}
+.timeline-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 15px rgba(88,228,154,.55);
+  margin-bottom:13px;
+}
+.timeline-year{
+  color:#8cebb0;font-size:10px;font-weight:800;letter-spacing:.12em;
+}
+.timeline-item h3{font-size:14px;margin:7px 0 6px}
+.timeline-item p{color:var(--muted);font-size:10px;line-height:1.7;margin:0}
+
+.creator{
+  margin-top:18px;
+  padding:20px;
+  text-align:center;
+  border:1px solid rgba(232,199,119,.16);
+  border-radius:22px;
+  background:linear-gradient(135deg,rgba(232,199,119,.055),rgba(88,228,154,.035));
+}
+.creator-label{
+  color:#82988e;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-weight:800;
+}
+.creator-name{
+  margin-top:7px;
+  font-family:"DM Serif Display",serif;
+  font-size:25px;
+  color:#e8d59d;
+}
+.creator-class{
+  margin-top:3px;
+  color:#9bb0a5;
+  font-size:10px;
+  letter-spacing:.08em;
+}
+.creator-line{
+  width:55px;height:1px;
+  margin:11px auto 0;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+.signature{
+  margin-top:28px;
+  padding-top:17px;
+  border-top:1px solid rgba(50,80,60,.18);
+  text-align:right;
+}
+.signature small{
+  display:block;
+  color:#70846f;
+  font-size:10px;
+  margin-bottom:5px;
+}
+.signature strong{
+  font-family:"DM Serif Display",serif;
+  font-size:25px;
+  font-weight:400;
+  color:#31583b;
+}
+.signature span{
+  display:block;
+  color:#667b6c;
+  font-size:10px;
+  margin-top:2px;
+}
+
+.memory-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:10px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(88,228,154,.15);
+  background:rgba(88,228,154,.045);
+  color:#91b9a3;
+  font-size:9px;
+  font-weight:700;
+}
+.memory-chip i{color:var(--green)}
+
+@media(max-width:850px){
+  .timeline{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .timeline{grid-template-columns:1fr}
+  .creator-name{font-size:22px}
+}
+
+
+#like-btn:active{transform:scale(.96)}
+#like-btn i{transition:transform .25s ease}
+#like-btn:hover i{transform:scale(1.18)}
+
+</style>
+</head>
+
+<body>
+<div class="progress" id="progress"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#">
+      <span class="brand-mark"><i class="fa-solid fa-leaf"></i></span>
+      <span>Góc Cây · 10A1 K31</span>
+    </a>
+    <div class="nav-links">
+      <a href="#khoanh-khac">Ảnh</a><a href="#hanh-trinh">Hành trình</a><a href="#lop">Lớp</a><a href="#thay-co">Thầy cô</a><a href="#luu-but">Lưu bút</a><a href="#chia-se">Chia sẻ</a>
+      <button class="theme-btn" id="themeBtn" title="Đổi giao diện"><i class="fa-solid fa-circle-half-stroke"></i></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow"><i class="fa-solid fa-tree"></i> Trạm trú nắng · lưu giữ kỷ niệm</span>
+      <h1>Góc Cây<br><em>Trường Tôi.</em></h1>
+      <p class="lead">Một góc nhỏ dưới tán cây, nơi những giờ ra chơi dài hơn một chút, những câu chuyện vui hơn một chút và tuổi học trò được giữ lại theo cách dịu dàng nhất.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#khoanh-khac"><i class="fa-solid fa-images"></i>&nbsp; Xem kỷ niệm</a>
+        <button class="btn" onclick="openLetter()"><i class="fa-regular fa-envelope"></i>&nbsp; Mở lá thư</button>
+        <button class="btn" id="like-btn" onclick="addHeart()"><i class="fa-solid fa-heart"></i>&nbsp; Thả tim <b id="heart-count">0</b></button>
+      </div>
+    </div>
+    <div class="hero-card">
+      <span class="float-badge"><i class="fa-solid fa-location-dot"></i> THPT Hồng Thái</span>
+      <div class="hero-card-content">
+        <small>Khoảnh khắc của chúng mình</small>
+        <strong>“Có những nơi chỉ cần trở lại là ký ức tự tìm về.”</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="stats">
+    <div class="stat"><i class="fa-solid fa-heart"></i><b id="stat-heart">0</b><span>lượt yêu thích</span></div>
+    <div class="stat"><i class="fa-solid fa-camera"></i><b>04</b><span>khoảnh khắc nổi bật</span></div>
+    <div class="stat"><i class="fa-solid fa-pen"></i><b id="stat-msg">02</b><span>lời nhắn đang có</span></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="kicker">Vì sao nơi này đặc biệt?</div><h2>Một góc nhỏ, thật nhiều câu chuyện.</h2></div>
+    </div>
+    <div class="features">
+      <article class="card feature"><div class="icon"><i class="fa-solid fa-bolt"></i></div><h3>Trạm sạc năng lượng</h3><p>Bóng râm mát rượi giải tỏa mệt mỏi sau những tiết học căng thẳng. Một làn gió nhẹ cũng đủ làm dịu buổi trưa.</p></article>
+      <article class="card feature"><div class="icon"><i class="fa-solid fa-comments"></i></div><h3>Góc “tám” chuyện</h3><p>Nơi bàn chiến thuật học tập, ôn thi, học nhóm — hoặc đơn giản là cười thật to cùng hội bạn thân.</p></article>
+      <article class="card feature"><div class="icon"><i class="fa-solid fa-camera"></i></div><h3>Toạ độ check-in</h3><p>Background cho ảnh nhóm, ảnh kỷ yếu và những tấm hình “dìm hàng” chỉ hội mình mới hiểu.</p></article>
+    </div>
+  </section>
+
+  <section class="section" id="khoanh-khac">
+    <div class="section-head">
+      <div><div class="kicker">Archive · 10A1 K31</div><h2>Khoảnh khắc bốn mùa</h2><p class="sub">Những hình ảnh thân thương bên thầy cô và mái trường Hồng Thái.</p></div>
+    </div>
+    <div class="gallery">
+      <div class="photo" onclick="openImage(this.querySelector('img').src,'Thầy cô luôn đồng hành cùng chúng em')"><img src="assets/gallery/thay-co-ben-hanh.png" alt="Thầy cô tại trường" loading="lazy"><div class="caption"><i class="fa-solid fa-heart"></i>Thầy cô luôn bên ta</div></div>
+      <div class="photo" onclick="openImage(this.querySelector('img').src,'Kỷ niệm vui bên góc cây thân quen')"><img src="assets/gallery/ky-niem-ben-goc-cay.png" alt="Kỷ niệm bên góc cây" loading="lazy"><div class="caption"><i class="fa-solid fa-tree"></i>Kỷ niệm bên góc cây</div></div>
+      <div class="photo" onclick="openImage(this.querySelector('img').src,'Cổng trường THPT Hồng Thái rực rỡ trong nắng')"><img src="assets/gallery/cong-truong-hong-thai.png" alt="Cổng trường Hồng Thái" loading="lazy"><div class="caption"><i class="fa-solid fa-school"></i>Mái trường Hồng Thái</div></div>
+      <div class="photo" onclick="openImage(this.querySelector('img').src,'Một tiết học đầy ắp kỷ niệm')"><img src="assets/gallery/tiet-hoc-dang-nho.png" alt="Tiết học đáng nhớ" loading="lazy"><div class="caption"><i class="fa-solid fa-chalkboard-user"></i>Tiết học đáng nhớ</div></div>
+    </div>
+  
+  <section class="section" id="hanh-trinh">
+    <div class="section-head">
+      <div>
+        <div class="kicker">Memory Timeline</div>
+        <h2>Một hành trình, nhiều mùa nhớ.</h2>
+        <p class="sub">Những lát cắt nhỏ tạo nên một quãng thanh xuân thật lớn.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <article class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">KHI MỚI GẶP</div>
+        <h3>Những người bạn đầu tiên</h3>
+        <p>Từ những cái tên còn xa lạ, chúng ta dần trở thành một tập thể.</p>
+      </article>
+      <article class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">NHỮNG NGÀY THƯỜNG</div>
+        <h3>Góc cây quen thuộc</h3>
+        <p>Giờ ra chơi, những câu chuyện nhỏ và những trận cười chẳng cần lý do.</p>
+      </article>
+      <article class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">KỶ NIỆM</div>
+        <h3>Những bức ảnh còn lại</h3>
+        <p>Mỗi tấm ảnh giữ lại một khoảnh khắc mà thời gian không thể chụp lại lần hai.</p>
+      </article>
+      <article class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">MAI SAU</div>
+        <h3>Ngày trở về</h3>
+        <p>Mong một ngày chúng ta quay lại và vẫn nhận ra nơi này từng là thanh xuân.</p>
+      </article>
+    </div>
+  </section>
+
+  </section>
+
+  <section class="section" id="lop">
+    <div class="section-head"><div><div class="kicker">About · 10A1 K31</div><h2>Chúng mình là một tập thể.</h2><p class="sub">Không chỉ là một lớp học — mà là những người từng cùng nhau đi qua một đoạn thanh xuân.</p></div></div>
+    <div class="info-grid">
+      <article class="card info-card"><h3><i class="fa-solid fa-users" style="color:var(--green)"></i> 10A1 · K31</h3><p>Mỗi người một tính cách, một câu chuyện và một ước mơ. Điều làm chúng mình thành một tập thể là những ngày cùng học, cùng cười và cùng cố gắng.</p><div class="info-list"><div class="info-row"><span>Ngôi trường</span><b>THPT Hồng Thái</b></div><div class="info-row"><span>Khối / lớp</span><b>A1 · K31</b></div><div class="info-row"><span>Không gian ký ức</span><b>Góc cây thân quen</b></div></div></article>
+      <article class="card info-card"><h3><i class="fa-solid fa-seedling" style="color:var(--green)"></i> Điều còn lại</h3><p>Điểm số rồi sẽ nằm lại trong sổ. Những buổi học rồi sẽ thành ký ức. Nhưng tình bạn, tiếng cười và những lần giúp nhau sẽ còn ở lại lâu hơn.</p><div class="info-list"><div class="info-row"><span>Một điều nhớ</span><b>Giờ ra chơi</b></div><div class="info-row"><span>Một âm thanh</span><b>Tiếng cười</b></div><div class="info-row"><span>Một màu sắc</span><b>Màu xanh của lá</b></div></div></article>
+    </div>
+  </section>
+
+  <section class="section" id="thay-co">
+    <div class="section-head"><div><div class="kicker">Gratitude · Tri ân</div><h2>Một lời cảm ơn gửi thầy cô.</h2><p class="sub">Bởi phía sau mỗi thế hệ học sinh luôn có những người âm thầm đồng hành.</p></div></div>
+    <div class="teacher-grid">
+      <article class="card teacher-card"><div class="teacher-avatar"><i class="fa-solid fa-chalkboard-user"></i></div><h3>Người truyền cảm hứng</h3><p>Cảm ơn những bài học không chỉ nằm trên bảng mà còn theo chúng em bước ra ngoài cuộc sống.</p></article>
+      <article class="card teacher-card"><div class="teacher-avatar"><i class="fa-solid fa-book-open"></i></div><h3>Người đồng hành</h3><p>Cảm ơn những lần nhắc nhở, động viên và kiên nhẫn khi chúng em còn vụng về.</p></article>
+      <article class="card teacher-card"><div class="teacher-avatar"><i class="fa-solid fa-heart"></i></div><h3>Người giữ thanh xuân</h3><p>Cảm ơn vì đã giúp những năm tháng dưới mái trường trở thành một phần ký ức thật đẹp.</p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="kicker">Thanh xuân · Những con số</div><h2>Những điều tưởng nhỏ mà nhớ rất lâu.</h2></div></div>
+    <div class="counter-grid">
+      <div class="counter"><b>1</b><span>góc cây thân quen</span></div><div class="counter"><b>10A1</b><span>một tập thể</span></div><div class="counter"><b>K31</b><span>một thế hệ</span></div><div class="counter"><b>∞</b><span>chuyện để nhớ</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="kicker">Wish wall · Điều ước</div><h2>Nếu được gửi một điều tới tương lai…</h2></div></div>
+    <div class="wish-grid">
+      <article class="wish"><i class="fa-solid fa-star"></i><strong>Đừng quên nhau</strong><span>Dù mỗi người đi một hướng, mong chúng ta vẫn còn một ngày để gặp lại.</span></article>
+      <article class="wish"><i class="fa-solid fa-tree"></i><strong>Góc cây vẫn xanh</strong><span>Mong nơi này tiếp tục che bóng cho thật nhiều thế hệ học sinh.</span></article>
+      <article class="wish"><i class="fa-solid fa-graduation-cap"></i><strong>Ai cũng trưởng thành</strong><span>Mong mỗi người đều tìm được con đường khiến mình tự hào.</span></article>
+      <article class="wish"><i class="fa-solid fa-heart"></i><strong>Thanh xuân đáng nhớ</strong><span>Để sau này nhìn lại, chúng ta có thể mỉm cười và nói: “May mà ngày ấy đã gặp nhau.”</span></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="quote-wall"><div class="kicker">Một câu để nhớ</div><div class="bigquote">“Thanh xuân không ở lại, nhưng những người đã cùng ta đi qua thanh xuân thì có thể.”</div><p>Góc Cây Trường Tôi · 10A1 K31</p></div>
+  </section>
+
+  <section class="section">
+    <div class="letter">
+      <div>
+        <div class="kicker">Một lá thư gửi mai sau</div>
+        <h2>Gửi những người bạn<br>chưa từng gặp…</h2>
+        <p>Mai này, khi chúng mình rời mái trường, góc cây vẫn ở đây, đón những mùa áo trắng mới. Có một lời nhắn nhỏ dành cho các bạn.</p>
+        <button class="btn primary" onclick="openLetter()"><i class="fa-regular fa-envelope"></i>&nbsp; Chạm để mở thư</button>
+      </div>
+      <div class="envelope-wrap" onclick="openLetter()" role="button" tabindex="0" aria-label="Mở thư">
+        <div class="envelope"><span class="seal"><i class="fa-solid fa-leaf"></i></span><span class="envelope-label">GỬI THẾ HỆ HỌC SINH MAI SAU</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section card guest" id="luu-but">
+    <div class="kicker">Guestbook · Sổ lưu bút</div>
+    <h2>Để lại một dòng cho góc cây.</h2>
+    <p class="sub">Một lời chúc, một kỷ niệm hoặc đơn giản là một câu “nhớ quá”.</p>
+    <form class="form" onsubmit="handleGuestbookSubmit(event)">
+      <input class="input" id="guest-name" required maxlength="50" placeholder="Tên / biệt danh…">
+      <input class="input" id="guest-msg" required maxlength="300" placeholder="Viết một dòng kỷ niệm…">
+      <button class="btn primary" type="submit"><i class="fa-solid fa-paper-plane"></i> Gửi</button>
+    </form>
+    <div class="messages" id="guestbook-list">
+      <div class="message"><div class="message-top"><span><i class="fa-solid fa-leaf"></i> Minh Anh (12A2)</span><span>Vừa xong</span></div><p>“Nhớ mãi những buổi ngồi ôn thi tốt nghiệp dưới bóng cây này, mát dịu và bình yên cực kì!”</p></div>
+      <div class="message"><div class="message-top"><span><i class="fa-solid fa-gamepad"></i> Hoàng Nam (11A10)</span><span>10 phút trước</span></div><p>“Toạ độ quen thuộc của team Liên Quân giờ ra chơi hằng ngày 🎮😂”</p></div>
+    </div>
+  </section>
+
+  <section class="section card qr" id="chia-se">
+    <div class="qr-box"><div id="qrcode"></div></div>
+    <div class="qr-copy">
+      <div class="kicker">Share · QR</div>
+      <h3>Mang góc cây theo bạn.</h3>
+      <p>Tạo QR cho trang này để chia sẻ nhanh với bạn bè, lớp hoặc dùng trong poster / bài thuyết trình.</p>
+      <input class="input" id="qr-url-input" type="url" placeholder="https://...">
+      <div class="qr-actions">
+        <button class="btn primary" onclick="downloadQRCode()"><i class="fa-solid fa-download"></i> Tải PNG</button>
+        <button class="btn" onclick="copyQRLink()"><i class="fa-solid fa-copy"></i> Copy link</button>
+        <button class="btn" onclick="resetURL()"><i class="fa-solid fa-rotate-left"></i> Link hiện tại</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div>© 2026 Góc Cây Trường Tôi · Tập thể 10A1 · K31</div>
+  <div class="creator">
+    <div class="creator-label">Designed & crafted with memories by</div>
+    <div class="creator-name">Uông Văn Nghĩa</div>
+    <div class="creator-class">A1-K31 · HT</div>
+    <div class="creator-line"></div>
+    <div class="memory-chip"><i class="fa-solid fa-heart"></i> Một góc nhỏ của thanh xuân</div>
+  </div>
+</footer>
+
+<button class="top" id="topBtn" onclick="scrollTo({top:0,behavior:'smooth'})"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast" id="toast"><i id="toast-icon" class="fa-solid fa-circle-check" style="color:#58e49a"></i><span id="toast-msg"></span></div>
+
+<div class="modal" id="letterModal" onclick="backdropClose(event,'letterModal')">
+  <div class="modal-panel">
+    <button class="close" onclick="closeModal('letterModal')" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+    <article class="letter-paper">
+      <div class="kicker">Từ góc cây · THPT Hồng Thái</div>
+      <h2>Giữ màu xanh,<br>giữ cả một thời học sinh.</h2>
+      <p><strong>Gửi các bạn học sinh của những năm tháng sau này,</strong></p>
+      <p>Khi các bạn đọc tấm thiệp này, có lẽ chúng mình đã rời xa mái trường. Nhưng dưới tán cây quen thuộc, vẫn còn đâu đó tiếng cười giờ ra chơi, những lần cùng nhau ôn bài và bao ước mơ được kể bằng tất cả sự trong trẻo của tuổi học trò.</p>
+      <p><strong>Hãy cùng giữ mái trường luôn xanh nhé.</strong> Bỏ rác đúng nơi, phân loại khi có thùng phù hợp, mang theo bình nước cá nhân và hạn chế nhựa dùng một lần. Đừng bẻ cành, hái lá hay làm tổn thương cây. Nhớ khóa vòi nước, tắt đèn và quạt khi không còn sử dụng — những việc nhỏ hôm nay sẽ giữ bóng mát cho ngày mai.</p>
+      <p><strong>Hãy trân trọng những gì nhà trường trao cho chúng ta.</strong> Một chiếc bàn sạch, một cuốn sách lành lặn, một chiếc ghế vững vàng đều cần được gìn giữ. Đừng viết, vẽ lên bàn ghế hoặc tường; hãy dùng thiết bị đúng cách và báo thầy cô khi thấy hư hỏng.</p>
+      <p><strong>Và hãy sống thật đẹp những năm tháng học sinh.</strong> Biết cảm ơn thầy cô, quan tâm bạn bè, giúp nhau qua những bài học khó. Hãy lưu lại một bức ảnh, một dòng lưu bút, một câu chuyện dưới gốc cây — nhưng đừng quên thật sự có mặt và tận hưởng từng khoảnh khắc.</p>
+      <p class="quote">“Chúng mình gửi lại một góc cây xanh. Mong các bạn gửi tiếp một mái trường đầy yêu thương.”</p>
+      <p>Chúc các bạn có một thời học sinh rực rỡ. Một ngày nào đó, khi trở về, mong chúng ta vẫn nhận ra bóng cây ấy, mái trường ấy và những điều tốt đẹp đã cùng nhau gìn giữ.</p>
+      <p style="border-top:1px solid rgba(50,80,60,.18);padding-top:18px">Thân mến,<br><strong>Những người bạn từng ngồi dưới góc cây này</strong><br>Tập thể 10A1 · K31</p>
+
+      <div class="signature">
+        <small>Người thực hiện trang lưu niệm</small>
+        <strong>Uông Văn Nghĩa</strong>
+        <span>A1-K31 · HT</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+<div class="modal" id="imageModal" onclick="backdropClose(event,'imageModal')">
+  <div class="image-panel">
+    <button class="close" onclick="closeModal('imageModal')"><i class="fa-solid fa-xmark"></i></button>
+    <img id="modal-img" src="" alt="Ảnh phóng to">
+    <div class="image-caption" id="modal-caption"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ===== SUPABASE CONFIG =====
+   Thay 2 giá trị dưới đây bằng Project URL + Publishable key của Supabase.
+   Chỉ dùng publishable key ở trình duyệt; TUYỆT ĐỐI không đặt secret/service_role key vào HTML.
+*/
+const SUPABASE_URL = 'https://pasaibhjvmqxkxgazeuy.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_i0hHndaivS6LMJ-dqdaQKw_ij-iCELl';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+let qrcodeObj=null, heartCount=0;
+const HEART_LIMIT=5;
+const BROWSER_ID_KEY='goc-cay-truong-toi-browser-id-v1';
+const $=id=>document.getElementById(id);
+
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-innerHeight;
+  $('progress').style.width=(h>0?(scrollY/h)*100:0)+'%';
+  $('topBtn').classList.toggle('show',scrollY>600);
+},{passive:true});
+
+function toast(message,error=false){
+  $('toast-msg').textContent=message;
+  $('toast-icon').className=error?'fa-solid fa-circle-xmark':'fa-solid fa-circle-check';
+  $('toast-icon').style.color=error?'#ff6f91':'#58e49a';
+  $('toast').classList.add('show');
+  clearTimeout(window._toast); window._toast=setTimeout(()=>$('toast').classList.remove('show'),3200);
+}
+function openLetter(){ $('letterModal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ $(id).classList.remove('open'); if(!document.querySelector('.modal.open')) document.body.style.overflow=''; }
+function backdropClose(e,id){if(e.target===$(id)) closeModal(id)}
+function openImage(src,caption){$('modal-img').src=src;$('modal-caption').textContent=caption;$('imageModal').classList.add('open');document.body.style.overflow='hidden'}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));document.body.style.overflow=''}});
+
+function getBrowserId(){
+  let id=localStorage.getItem(BROWSER_ID_KEY);
+  if(!id){
+    id=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+    localStorage.setItem(BROWSER_ID_KEY,id);
+  }
+  return id;
+}
+
+function getLocalHeartUsed(){
+  return Number(localStorage.getItem('goc-cay-truong-toi-heart-used-v1')||0);
+}
+function setLocalHeartUsed(value){
+  localStorage.setItem('goc-cay-truong-toi-heart-used-v1',String(value));
+}
+
+async function addHeart(){
+  const b=$('like-btn');
+  const used=getLocalHeartUsed();
+  if(used>=HEART_LIMIT){
+    toast('Trình duyệt này đã dùng đủ 5 lượt tim ❤️',true);
+    return;
+  }
+  b.disabled=true;
+  try{
+    const {data,error}=await supabaseClient.rpc('add_heart',{p_browser_id:getBrowserId()});
+    if(error) throw error;
+    if(!data?.ok){
+      if(Number(data?.used)>=HEART_LIMIT) setLocalHeartUsed(HEART_LIMIT);
+      heartCount=Number(data?.heart_count??heartCount);
+      $('heart-count').textContent=heartCount; $('stat-heart').textContent=heartCount;
+      toast(data?.message||'Trình duyệt này đã đủ 5 lượt tim.',true);
+      return;
+    }
+    const nextUsed=Math.min(HEART_LIMIT,used+1);
+    setLocalHeartUsed(nextUsed);
+    heartCount=Number(data.heart_count??heartCount+1);
+    $('heart-count').textContent=heartCount; $('stat-heart').textContent=heartCount;
+    toast(`Đã thả tim ❤️ (${nextUsed}/${HEART_LIMIT})`);
+  }catch(e){
+    console.error(e);
+    toast('Chưa thể lưu lượt tim. Hãy kiểm tra Supabase.',true);
+  }finally{b.disabled=false}
+}
+function initQR(url){
+  if(!qrcodeObj) qrcodeObj=new QRCode($('qrcode'),{text:url,width:180,height:180,colorDark:'#14532d',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});
+  else {qrcodeObj.clear();qrcodeObj.makeCode(url)}
+}
+function resetURL(){const u=location.href;$('qr-url-input').value=u;initQR(u);toast('Đã dùng link hiện tại.')}
+function downloadQRCode(){
+  const img=$('qrcode').querySelector('img'),canvas=$('qrcode').querySelector('canvas');
+  const src=img?.src||canvas?.toDataURL('image/png'); if(!src)return toast('QR chưa sẵn sàng.',true);
+  const a=document.createElement('a');a.href=src;a.download='goc-cay-truong-toi-qr.png';a.click();toast('Đã tải mã QR PNG.');
+}
+async function copyQRLink(){
+  const value=$('qr-url-input').value.trim()||location.href;
+  try{await navigator.clipboard.writeText(value);toast('Đã copy link.')}
+  catch{const t=document.createElement('textarea');t.value=value;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();toast('Đã copy link.')}
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function renderMessage(m,prepend=false){
+  const el=document.createElement('div');el.className='message';
+  el.innerHTML=`<div class="message-top"><span><i class="fa-solid fa-leaf"></i> ${escapeHtml(m.name)}</span><span>${m.createdAt?new Intl.DateTimeFormat('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(m.createdAt)):'Vừa xong'}</span></div><p>“${escapeHtml(m.message)}”</p>`;
+  prepend?$('guestbook-list').prepend(el):$('guestbook-list').append(el);
+  $('stat-msg').textContent=$('guestbook-list').children.length;
+}
+async function handleGuestbookSubmit(e){
+  e.preventDefault();
+  const name=$('guest-name').value.trim(),message=$('guest-msg').value.trim(),btn=e.submitter;
+  if(!name||!message)return;
+  btn.disabled=true;
+  try{
+    const {data,error}=await supabaseClient
+      .from('guestbook_messages')
+      .insert({name,message})
+      .select('id,name,message,created_at')
+      .single();
+    if(error) throw error;
+    renderMessage({id:data.id,name:data.name,message:data.message,createdAt:data.created_at},true);
+    $('guest-name').value='';$('guest-msg').value='';
+    toast('Đã lưu lời nhắn của bạn! 🎉');
+  }catch(e){
+    console.error(e);
+    toast('Chưa thể lưu lời nhắn. Hãy kiểm tra Supabase/RLS.',true);
+  }finally{btn.disabled=false}
+}
+
+async function loadGuestbook(){
+  try{
+    const [messagesResult,statsResult]=await Promise.all([
+      supabaseClient.from('guestbook_messages').select('id,name,message,created_at').order('created_at',{ascending:false}).limit(200),
+      supabaseClient.from('site_stats').select('heart_count').eq('id',1).single()
+    ]);
+    if(messagesResult.error) throw messagesResult.error;
+    if(statsResult.error) throw statsResult.error;
+    heartCount=Number(statsResult.data?.heart_count??0);
+    $('heart-count').textContent=heartCount;$('stat-heart').textContent=heartCount;
+    $('guestbook-list').innerHTML='';
+    (messagesResult.data||[]).forEach(m=>renderMessage({id:m.id,name:m.name,message:m.message,createdAt:m.created_at},false));
+    $('stat-msg').textContent=String((messagesResult.data||[]).length).padStart(2,'0');
+  }catch(e){
+    console.error(e);
+    toast('Không tải được lưu bút. Hãy kiểm tra Supabase.',true);
+  }
+}
+$('themeBtn').addEventListener('click',()=>{
+  const light=document.body.dataset.theme==='light';
+  document.body.dataset.theme=light?'':'light';
+  if(!light){
+    document.body.style.setProperty('--text','#10231b');document.body.style.setProperty('--muted','#587066');document.body.style.setProperty('--line','rgba(18,66,45,.15)');
+    document.body.style.background='linear-gradient(145deg,#f3f8f3,#e8f2eb)';
+    document.querySelector('.nav').style.background='rgba(243,248,243,.78)';
+    document.querySelector('.nav').style.color='#10231b';
+    document.querySelectorAll('.card,.stat,.letter').forEach(x=>x.style.color='#10231b');
+    toast('Đã chuyển sang giao diện sáng ☀️');
+  }else{location.reload()}
+});
+window.addEventListener('load',()=>{
+  $('qr-url-input').value=location.href;initQR(location.href);loadGuestbook();
+});
+</script>
+</body>
+</html>
